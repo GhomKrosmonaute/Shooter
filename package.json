@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "bundle": "esbuild cache/index.js --bundle --outfile=\"dist/bundle.js\"",
+    "bundle": "esbuild cache/index.js --target=chrome58,firefox57,safari11,edge16 --bundle --sourcemap --outfile=\"dist/bundle.js\"",
     "format": "standard --fix src/*.ts",
     "build": "tsc && npm run bundle",
     "start": "npm run build && serve dist/"
