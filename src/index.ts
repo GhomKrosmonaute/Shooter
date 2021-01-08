@@ -1,5 +1,5 @@
-import './app'
+import "./app"
 
-// import AkumaBall from "./entities/AkumaBall"
-//
-// new AkumaBall
+import AkumaBall from "./entities/AkumaBall"
+
+new AkumaBall()

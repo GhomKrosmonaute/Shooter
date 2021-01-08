@@ -1,8 +1,7 @@
-import * as events from "events"
 import * as PIXI from "pixi.js"
-import app from "../app";
+import app from "../app"
 
-export default abstract class Entity extends events.EventEmitter {
+export default abstract class Entity extends PIXI.utils.EventEmitter {
   sprite: PIXI.Sprite | PIXI.AnimatedSprite
 
   abstract update(): unknown
@@ -12,12 +11,12 @@ export default abstract class Entity extends events.EventEmitter {
     this.sprite = sprite
   }
 
-  setup(){
+  setup() {
     this.emit("setup")
     app.stage.addChild(this.sprite)
   }
 
-  teardown(){
+  teardown() {
     app.stage.removeChild(this.sprite)
     this.emit("teardown")
   }
