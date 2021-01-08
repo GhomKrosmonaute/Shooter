@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "cache",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "lib": ["es2020", "dom"],
+    "target": "es2020",
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": "src"
+  }
+}
