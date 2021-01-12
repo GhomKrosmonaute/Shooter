@@ -22202,22 +22202,69 @@ void main() {
     resizeTo: window
   });
   document.body.appendChild(app.view);
+  function getAnimatedSprite(name) {
+    const sheet = Loader2.shared.resources[`assets/sprites/${name}.json`].spritesheet;
+    const sprite = new AnimatedSprite(sheet.animations.image_sequence);
+    sprite.animationSpeed = 60 / 15;
+    sprite.position.set(100, 100);
+    sprite.scale.set(5);
+    sprite.visible = true;
+    sprite.play();
+    return sprite;
+  }
   var app_default = app;
 
   // src/entities/Entity.ts
   var Entity = class extends utils_es_exports.EventEmitter {
     constructor(sprite) {
       super();
-      this.sprite = sprite;
+      this._isSetup = false;
+      this._sprite = sprite;
+    }
+    get sprite() {
+      return this._sprite;
+    }
+    get isSetup() {
+      return this._isSetup;
     }
     setup() {
       this.emit("setup");
-      app_default.stage.addChild(this.sprite);
+      app_default.stage.addChild(this._sprite);
+      this._isSetup = true;
     }
     teardown() {
-      app_default.stage.removeChild(this.sprite);
+      app_default.stage.removeChild(this._sprite);
       this.emit("teardown");
     }
   };
+  Entity.children = [];
   var Entity_default = Entity;
+
+  // src/entities/AkumaBall.ts
+  var AkumaBall = class extends Entity_default {
+    constructor() {
+      super(getAnimatedSprite("akuma-ball"));
+    }
+    update() {
+      this.sprite.position.x++;
+    }
+  };
+  var AkumaBall_default = AkumaBall;
+
+  // src/index.ts
+  async function setup() {
+    await new Promise((resolve) => {
+      Loader2.shared.add("assets/sprites/akuma-ball.json").load(resolve);
+    });
+    const akumaBall = new AkumaBall_default();
+    akumaBall.setup();
+  }
+  function update() {
+    Entity_default.children.forEach((entity) => {
+      if (entity.isSetup)
+        entity.update();
+    });
+    requestAnimationFrame(update);
+  }
+  setup().then(() => requestAnimationFrame(update)).catch();
 })();

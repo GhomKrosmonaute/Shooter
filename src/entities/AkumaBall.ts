@@ -1,4 +1,4 @@
-import app, { getAnimatedSprite } from "../app"
+import { getAnimatedSprite } from "../app"
 import Entity from "./Entity"
 
 export default class AkumaBall extends Entity {
