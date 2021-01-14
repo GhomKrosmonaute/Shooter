@@ -7,6 +7,7 @@ function bundle() {
     .pipe(
       esbuild({
         outfile: "bundle.js",
+        sourcemap: "inline",
         bundle: true,
         target: ["chrome58", "firefox57", "safari11", "edge16"],
         loader: {

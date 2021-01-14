@@ -1,24 +1,26 @@
 import * as PIXI from "pixi.js"
 import Entity from "./entities/Entity"
-import AkumaBall from "./entities/AkumaBall"
+import Game from "./scenes/Game"
 
 async function setup() {
   await new Promise((resolve) => {
-    PIXI.Loader.shared.add("assets/sprites/akuma-ball.json").load(resolve)
+    PIXI.Loader.shared
+      .add("assets/sprites/akuma-ball.json")
+      .add("assets/sprites/game-background.png")
+      .load(resolve)
   })
 
-  const akumaBall = new AkumaBall()
-
-  akumaBall.setup()
+  new Game()
 }
 
-function update() {
-  Entity.children.forEach((entity) => {
-    if (entity.isSetup) entity.update()
-  })
-  requestAnimationFrame(update)
-}
-
-setup()
-  .then(() => requestAnimationFrame(update))
-  .catch()
+setup().then(() => {
+  PIXI.Ticker.shared.add(
+    () => {
+      Entity.children.forEach((entity) => {
+        if (entity.isSetup && !entity.parent) entity.update()
+      })
+    },
+    undefined,
+    PIXI.UPDATE_PRIORITY.HIGH
+  )
+})

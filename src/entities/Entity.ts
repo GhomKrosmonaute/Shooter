@@ -1,13 +1,33 @@
 import * as PIXI from "pixi.js"
-import app from "../app"
+import * as shooter from "../shooter"
 
-export default abstract class Entity extends PIXI.utils.EventEmitter {
-  static children: Entity[] = []
+export default abstract class Entity<
+  Sprite extends PIXI.Sprite | PIXI.AnimatedSprite =
+    | PIXI.Sprite
+    | PIXI.AnimatedSprite
+> extends PIXI.utils.EventEmitter {
+  static children: Set<Entity> = new Set()
 
-  private readonly _sprite: PIXI.Sprite | PIXI.AnimatedSprite
+  children: Set<Entity> = new Set()
+  parent?: Entity
+
+  private readonly _sprite: Sprite
   private _isSetup: boolean = false
 
-  get sprite(): PIXI.Sprite | PIXI.AnimatedSprite {
+  // abstract id: string
+
+  abstract update(): unknown
+
+  protected constructor(sprite: Sprite, setup?: boolean) {
+    super()
+    this._sprite = sprite
+    this.on("update", () => {
+      this.children.forEach((child) => child.update())
+    })
+    if (setup) this.setup()
+  }
+
+  get sprite(): Sprite {
     return this._sprite
   }
 
@@ -15,21 +35,35 @@ export default abstract class Entity extends PIXI.utils.EventEmitter {
     return this._isSetup
   }
 
-  abstract update(): unknown
-
-  protected constructor(sprite: PIXI.AnimatedSprite | PIXI.Sprite) {
-    super()
-    this._sprite = sprite
+  get container(): PIXI.Container {
+    return this.parent ? this.parent.sprite : shooter.app.stage
   }
 
   setup() {
     this.emit("setup")
-    app.stage.addChild(this._sprite)
+    this.container.addChild(this._sprite)
+    Entity.children.add(this)
     this._isSetup = true
   }
 
-  teardown() {
-    app.stage.removeChild(this._sprite)
-    this.emit("teardown")
+  destroy() {
+    this._isSetup = false
+    this.container.removeChild(this._sprite)
+    Entity.children.delete(this)
+    this._sprite.removeChildren()
+    this.children.forEach((child) => child.destroy())
+    this.emit("destroy")
+  }
+
+  addChild(entity: Entity, setup?: boolean) {
+    entity.parent = this
+    this.children.add(entity)
+    if (setup) entity.setup()
+  }
+
+  removeChild(entity: Entity, destroy?: boolean) {
+    entity.parent = null
+    this.children.delete(entity)
+    if (destroy) entity.destroy()
   }
 }
