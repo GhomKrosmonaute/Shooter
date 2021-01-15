@@ -10,7 +10,7 @@ export default class Game extends Scene<PIXI.Sprite> {
     super(shooter.getSprite("game-background"))
 
     this.akumaBall = new AkumaBall({
-      position: new PIXI.Point(300, 300),
+      position: new PIXI.Point(500, 300),
     })
 
     this.addChild(this.akumaBall, true)

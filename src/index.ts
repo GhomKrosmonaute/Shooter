@@ -10,7 +10,7 @@ async function setup() {
       .load(resolve)
   })
 
-  new Game()
+  new Game().setup()
 }
 
 setup().then(() => {

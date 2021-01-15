@@ -19,4 +19,9 @@ function bundle() {
     .pipe(gulp.dest("./dist/"))
 }
 
+function watch() {
+  return gulp.watch("src/**/*.ts", bundle)
+}
+
 exports.bundle = bundle
+exports.watch = watch

@@ -28,7 +28,9 @@ export function getSprite(name: string): PIXI.Sprite {
   return new PIXI.Sprite(resource.texture)
 }
 
-export function listen(callback: (event: PIXI.InteractionEvent) => unknown) {
+export function listenInteraction(
+  callback: (event: PIXI.InteractionEvent) => unknown
+) {
   return callback
 }
 
