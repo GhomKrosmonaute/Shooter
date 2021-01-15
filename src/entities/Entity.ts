@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js"
-import * as shooter from "../shooter"
+import * as shooter from "../app/shooter"
 
 export default abstract class Entity<
   Sprite extends PIXI.Sprite | PIXI.AnimatedSprite =
@@ -10,11 +10,10 @@ export default abstract class Entity<
 
   children: Set<Entity> = new Set()
   parent?: Entity
+  id: string | number = null
 
   private readonly _sprite: Sprite
   private _isSetup: boolean = false
-
-  // abstract id: string
 
   abstract update(): unknown
 
@@ -43,6 +42,7 @@ export default abstract class Entity<
     this.emit("setup")
     this.container.addChild(this._sprite)
     Entity.children.add(this)
+    this.id = Entity.children.size
     this._isSetup = true
   }
 
@@ -65,5 +65,9 @@ export default abstract class Entity<
     entity.parent = null
     this.children.delete(entity)
     if (destroy) entity.destroy()
+  }
+
+  static find(id: string | number): Entity | undefined {
+    return [...this.children].find((entity) => entity.id === id)
   }
 }

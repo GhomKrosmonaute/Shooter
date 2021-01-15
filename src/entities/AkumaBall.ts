@@ -1,12 +1,14 @@
 import * as PIXI from "pixi.js"
-import * as shooter from "../shooter"
-import Entity from "./Entity"
+import * as shooter from "../app/shooter"
+import Enemy from "./Enemy"
 
 interface AkumaBallOptions {
   position: PIXI.IPointData
 }
 
-export default class AkumaBall extends Entity<PIXI.AnimatedSprite> {
+export default class AkumaBall extends Enemy<PIXI.AnimatedSprite> {
+  pattern: (() => {})[]
+
   constructor(options: AkumaBallOptions) {
     super(
       shooter.getAnimatedSprite("akuma-ball", {
