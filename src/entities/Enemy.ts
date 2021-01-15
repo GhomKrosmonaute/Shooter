@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js"
 import Character from "./Character"
+import Player from "./Player"
 
 export default abstract class Enemy<
   Sprite extends PIXI.Sprite | PIXI.AnimatedSprite =

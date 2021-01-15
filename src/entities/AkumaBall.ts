@@ -35,5 +35,7 @@ export default class AkumaBall extends Enemy<PIXI.AnimatedSprite> {
     this.sprite.gotoAndPlay(0)
   }
 
-  update() {}
+  update() {
+    super.update()
+  }
 }

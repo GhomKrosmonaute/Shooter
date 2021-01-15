@@ -15,14 +15,10 @@ export default abstract class Entity<
   private readonly _sprite: Sprite
   private _isSetup: boolean = false
 
-  abstract update(): unknown
-
   protected constructor(sprite: Sprite, setup?: boolean) {
     super()
     this._sprite = sprite
-    this.on("update", () => {
-      this.children.forEach((child) => child.update())
-    })
+    this.on("update", () => {})
     if (setup) this.setup()
   }
 
@@ -44,6 +40,11 @@ export default abstract class Entity<
     Entity.children.add(this)
     this.id = Entity.children.size
     this._isSetup = true
+  }
+
+  update() {
+    this.emit("update")
+    this.children.forEach((child) => child.update())
   }
 
   destroy() {
