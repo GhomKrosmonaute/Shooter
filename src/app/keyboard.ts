@@ -6,7 +6,7 @@ class Key extends PIXI.utils.EventEmitter {
   private _isPressed: boolean = false
   private _pressedAt: number = 0
 
-  constructor(public readonly name: string) {
+  constructor(public readonly id: string | number) {
     super()
   }
 
@@ -20,6 +20,24 @@ class Key extends PIXI.utils.EventEmitter {
     }
   }
 
+  on(
+    event: "up" | "down",
+    fn: (event: KeyboardEvent, duration: number) => unknown,
+    context?: any
+  ): this {
+    super.on(event, fn, context)
+    return this
+  }
+
+  once(
+    event: "up" | "down",
+    fn: (event: KeyboardEvent, duration: number) => unknown,
+    context?: any
+  ): this {
+    super.once(event, fn, context)
+    return this
+  }
+
   get duration(): number {
     if (!this._isPressed) return 0
     return Date.now() - this._pressedAt
@@ -28,7 +46,14 @@ class Key extends PIXI.utils.EventEmitter {
   get isPressed(): boolean {
     return this._isPressed
   }
+
+  isMineEvent(event: KeyboardEvent): boolean {
+    if (typeof this.id === "string") return event.key === this.id
+    return event.keyCode === this.id
+  }
 }
+
+//=> https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent/key#r%C3%A9sultat
 
 export const up = new Key("ArrowUp")
 export const left = new Key("ArrowLeft")
@@ -39,12 +64,12 @@ keys.add(up).add(left).add(right).add(down)
 
 document.addEventListener("keydown", (event) => {
   keys.forEach((key) => {
-    if (event.key === key.name) key.handle(event, "down")
+    if (key.isMineEvent(event)) key.handle(event, "down")
   })
 })
 
 document.addEventListener("keyup", (event) => {
   keys.forEach((key) => {
-    if (event.key === key.name) key.handle(event, "up")
+    if (key.isMineEvent(event)) key.handle(event, "up")
   })
 })

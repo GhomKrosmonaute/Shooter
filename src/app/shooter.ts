@@ -34,4 +34,23 @@ export function listenInteraction(
   return callback
 }
 
+export function resizeAsBackground(sprite: PIXI.Sprite | PIXI.AnimatedSprite) {
+  const { clientWidth, clientHeight } = document.body
+
+  const ratio = sprite.width / sprite.height
+  const clientRatio = clientWidth / clientHeight
+
+  if (clientRatio > ratio) {
+    sprite.height /= sprite.width / clientWidth
+    sprite.width = clientWidth
+    sprite.position.x = 0
+    sprite.position.y = (clientHeight - sprite.height) / 2
+  } else {
+    sprite.width /= sprite.height / clientHeight
+    sprite.height = clientHeight
+    sprite.position.y = 0
+    sprite.position.x = (clientWidth - sprite.width) / 2
+  }
+}
+
 export const mouse: PIXI.Point = app.renderer.plugins.interaction.mouse.global

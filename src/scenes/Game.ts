@@ -22,5 +22,6 @@ export default class Game extends Scene<PIXI.Sprite> {
 
   update() {
     super.update()
+    shooter.resizeAsBackground(this.sprite)
   }
 }
