@@ -8,6 +8,7 @@ class Key extends PIXI.utils.EventEmitter {
 
   constructor(public readonly id: string | number) {
     super()
+    keys.add(this)
   }
 
   handle(event: KeyboardEvent, action: "up" | "down") {
@@ -59,8 +60,7 @@ export const up = new Key("ArrowUp")
 export const left = new Key("ArrowLeft")
 export const right = new Key("ArrowRight")
 export const down = new Key("ArrowDown")
-
-keys.add(up).add(left).add(right).add(down)
+export const space = new Key(" ")
 
 document.addEventListener("keydown", (event) => {
   keys.forEach((key) => {
