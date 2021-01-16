@@ -8,9 +8,8 @@
   "scripts": {
     "stop": "pm2 delete shooter",
     "bundle": "gulp bundle",
-    "watch": "gulp bundle && gulp watch",
-    "format": "prettier --write src gulpfile.js tsconfig.json",
-    "serve": "gulp bundle && reload -b --dir=dist --port=5000"
+    "start": "gulp watch",
+    "format": "prettier --write src gulpfile.js tsconfig.json"
   },
   "devDependencies": {
     "@types/node": "^14.14.20",
