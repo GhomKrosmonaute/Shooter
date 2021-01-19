@@ -8,6 +8,9 @@ interface AkumaBallOptions {
 
 export default class AkumaBall extends Enemy<PIXI.AnimatedSprite> {
   pattern: (() => {})[]
+  maxSpeed = 6
+  deceleration = 0.95
+  acceleration = 1.5
 
   constructor(options: AkumaBallOptions) {
     super(
@@ -36,6 +39,8 @@ export default class AkumaBall extends Enemy<PIXI.AnimatedSprite> {
   }
 
   update() {
+    // @ts-ignore
+    this.followCharacter(window.game.player)
     super.update()
   }
 }

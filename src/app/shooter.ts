@@ -53,4 +53,18 @@ export function resizeAsBackground(sprite: PIXI.Sprite | PIXI.AnimatedSprite) {
   }
 }
 
+export function toRadians(degrees: number): number {
+  return degrees * (Math.PI / 180)
+}
+
+export function toDegrees(radians: number): number {
+  return radians * (180 / Math.PI)
+}
+
+export function dist(a: PIXI.IPointData, b: PIXI.IPointData): number {
+  const c = a.x - b.x
+  const d = a.y - b.y
+  return Math.sqrt(c * c + d * d)
+}
+
 export const mouse: PIXI.Point = app.renderer.plugins.interaction.mouse.global

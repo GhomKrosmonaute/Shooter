@@ -5,6 +5,9 @@ import Character from "./Character"
 
 export default class Player extends Character<PIXI.Sprite> {
   id = "player"
+  maxSpeed = 10
+  acceleration = 1.2
+  deceleration = 0.8
 
   constructor() {
     super(
@@ -13,13 +16,20 @@ export default class Player extends Character<PIXI.Sprite> {
         play: false,
       })
     )
+    this.sprite.position.set(500, 500)
   }
 
   update() {
-    if (keyboard.up.isPressed) this.sprite.position.y -= 5
-    if (keyboard.down.isPressed) this.sprite.position.y += 5
-    if (keyboard.left.isPressed) this.sprite.position.x -= 5
-    if (keyboard.right.isPressed) this.sprite.position.x += 5
+    this.pointTo(keyboard.mouse)
+
+    if (shooter.dist(this.position, shooter.mouse) < this.sprite.width / 2) {
+      this.decelerate()
+    } else {
+      this.accelerate()
+    }
+
+    this.move()
+
     super.update()
   }
 }

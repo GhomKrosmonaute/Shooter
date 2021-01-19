@@ -68,7 +68,7 @@ export default abstract class Entity<
     if (destroy) entity.destroy()
   }
 
-  static find(id: string | number): Entity | undefined {
-    return [...this.children].find((entity) => entity.id === id)
+  static find<T extends Entity>(id: string | number): T {
+    return [...this.children].find((entity) => entity.id === id) as T
   }
 }

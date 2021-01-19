@@ -73,3 +73,9 @@ document.addEventListener("keyup", (event) => {
     if (key.isMineEvent(event)) key.handle(event, "up")
   })
 })
+
+export const mouse = new PIXI.Point()
+
+document.addEventListener("mousemove", (event) => {
+  mouse.set(event.clientX, event.clientY)
+})

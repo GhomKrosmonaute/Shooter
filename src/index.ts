@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js"
-import * as keyboard from "./app/keyboard"
 import Entity from "./entities/Entity"
 import Game from "./scenes/Game"
 
